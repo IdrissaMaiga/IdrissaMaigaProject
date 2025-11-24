@@ -41,7 +41,7 @@ A comprehensive .NET MAUI mobile application that provides a **unified conversat
 
 ### Demo Video
 
-A full demonstration video is available in the [Presentation](./Presentation/) folder (`demo-video.mp4`).
+A full demonstration video is available in the [Presentation](./Presentation/) folder (`demo.mp4`).
 
 > **Complete Gallery**: For all screenshots, presentation materials (PowerPoint, PDF), and the demo video, visit the [Presentation](./Presentation/) folder.
 
