@@ -2026,8 +2026,8 @@ See `DEBUG_OUTPUT_FILTERING.md` for complete guide.
 ### 📋 Quick Reference
 
 For detailed compliance verification, see:
-- **[ASSIGNMENT_COMPLIANCE_REPORT.md](ASSIGNMENT_COMPLIANCE_REPORT.md)** - Comprehensive 20+ page compliance analysis
-- **[ASSIGNMENT_COMPLIANCE_CHECKLIST.md](ASSIGNMENT_COMPLIANCE_CHECKLIST.md)** - Quick checklist with evidence
+- **[ASSIGNMENT_COMPLIANCE_REPORT.md](Presentation/ASSIGNMENT_COMPLIANCE_REPORT.md)** - Comprehensive 20+ page compliance analysis
+- **[ASSIGNMENT_COMPLIANCE_CHECKLIST.md](Presentation/ASSIGNMENT_COMPLIANCE_CHECKLIST.md)** - Quick checklist with evidence
 
 ### ✅ Summary of Compliance
 
