@@ -4,15 +4,46 @@ A comprehensive .NET MAUI mobile application that provides a **unified conversat
 
 ## 📸 Demo & Screenshots
 
-**View detailed screenshots and presentation materials**: [Presentation Folder](./Presentation/)
+**View all screenshots, demo video, and presentation materials**: [Presentation Folder](./Presentation/)
 
-### Quick Preview
+### Application Screenshots
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="./Presentation/splash-screen.png" width="200px" alt="Splash Screen"/>
+      <br/>
+      <b>Splash Screen</b>
+    </td>
+    <td align="center">
+      <img src="./Presentation/login-screen.png" width="200px" alt="Login"/>
+      <br/>
+      <b>Login (Auth0)</b>
+    </td>
+    <td align="center">
+      <img src="./Presentation/chat-interface.png" width="200px" alt="Chat Interface"/>
+      <br/>
+      <b>AI Chat & Search</b>
+    </td>
+    <td align="center">
+      <img src="./Presentation/collection-page.png" width="200px" alt="Collection"/>
+      <br/>
+      <b>Product Collection</b>
+    </td>
+  </tr>
+</table>
+
+### Infrastructure
 
 #### Kubernetes Dashboard
 ![Kubernetes Dashboard](./Presentation/kubernetes-dashboard.png)
 *Kubernetes cluster managing all microservices (API, AI, Scraping) with automatic scaling and health monitoring*
 
-> **Note**: Additional screenshots showing the mobile app interface, chat functionality, and architecture diagrams are available in the [Presentation](./Presentation/) folder. For presentation materials (PowerPoint, PDF), see the same folder.
+### Demo Video
+
+A full demonstration video is available in the [Presentation](./Presentation/) folder (`demo-video.mp4`).
+
+> **Complete Gallery**: For all screenshots, presentation materials (PowerPoint, PDF), and the demo video, visit the [Presentation](./Presentation/) folder.
 
 ## 🎯 Key Innovation: Unified Search & Chat Interface
 

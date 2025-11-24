@@ -4,51 +4,54 @@ This folder contains visual demonstrations and presentation materials for the Pr
 
 ## 📸 Screenshots
 
-### Kubernetes Dashboard
+### 1. Splash Screen
+![Splash Screen](splash-screen.png)
+*Application startup screen with branding*
+
+### 2. App Selection
+![App Selection](app-selection.png)
+*Selecting and opening the Product Assistant app*
+
+### 3. Login & Registration
+![Login and Registration](login-registration.png)
+*Auth0 authentication integration - Login and Registration screens*
+
+### 4. Login Screen
+![Login Screen](login-screen.png)
+*User authentication interface with Auth0*
+
+### 5. Chat Interface (Unified Search & Chat)
+![Chat Interface](chat-interface.png)
+*Conversational AI shopping assistant with inline product display. Shows natural language interaction and AI-powered grounding search in action*
+
+### 6. Collection Page
+![Collection Page](collection-page.png)
+*User's saved products from chat conversations. Features search, filter, and product management functionality*
+
+### 7. Settings Page
+![Settings Page](settings-page.png)
+*App configuration including API key management and network status display*
+
+### 8. Kubernetes Dashboard
 ![Kubernetes Dashboard](kubernetes-dashboard.png)
 *Kubernetes cluster overview showing all deployments, services, and pods running in the product-assistant namespace*
 
-### Application Screenshots
+### Additional Screenshots (To Be Added)
 
-> **Note**: Add your application screenshots here. Recommended screenshots to capture:
+> **Optional**: Add these screenshots if available:
 
-#### 1. Mobile App - Login Screen
-- File: `login-screen.png` (to be added)
-- Shows Auth0 authentication integration
-
-#### 2. Mobile App - Chat Interface (Unified Search & Chat)
-- File: `chat-interface.png` (to be added)
-- Demonstrates the conversational AI shopping assistant
-- Shows inline product display within chat messages
-- Example conversation with product recommendations
-
-#### 3. Mobile App - Product Search Results
-- File: `product-search.png` (to be added)
-- Shows products displayed inline in conversation
-- AI-powered grounding search in action
-
-#### 4. Mobile App - Collection Page
-- File: `collection-page.png` (to be added)
-- User's saved products from chat conversations
-- Search and filter functionality
-
-#### 5. Mobile App - Settings Page
-- File: `settings-page.png` (to be added)
-- API key management
-- Network status display
-
-#### 6. Backend - Swagger API Documentation
-- File: `swagger-api.png` (to be added)
+#### Backend - Swagger API Documentation
+- File: `swagger-api.png` (optional)
 - API endpoints overview
 - Interactive API testing interface
 
-#### 7. Docker Desktop - Running Containers
-- File: `docker-containers.png` (to be added)
+#### Docker Desktop - Running Containers
+- File: `docker-containers.png` (optional)
 - Shows all three microservices running
 - Container health status
 
-#### 8. Architecture Diagram
-- File: `architecture-diagram.png` (to be added)
+#### Architecture Diagram
+- File: `architecture-diagram.png` (optional)
 - Visual representation of microservices architecture
 - Service communication flow
 
@@ -112,19 +115,27 @@ Before adding screenshots:
 ```
 Presentation/
 ├── README.md (this file)
-├── kubernetes-dashboard.png
-├── login-screen.png (to be added)
-├── chat-interface.png (to be added)
-├── product-search.png (to be added)
-├── collection-page.png (to be added)
-├── settings-page.png (to be added)
-├── swagger-api.png (to be added)
-├── docker-containers.png (to be added)
-├── architecture-diagram.png (to be added)
-├── Product-Assistant-AI-Powered-Shopping-Experience.pptx
-├── Product-Assistant-AI-Powered-Shopping-Experience (1).pptx
-├── Product-Assistant-AI-Powered-Shopping-Experience.pdf
-└── Product-Assistant-AI-Powered-Shopping-Experience (1).pdf
+│
+├── 📱 Mobile App Screenshots
+│   ├── splash-screen.png
+│   ├── app-selection.png
+│   ├── login-registration.png
+│   ├── login-screen.png
+│   ├── chat-interface.png
+│   ├── collection-page.png
+│   └── settings-page.png
+│
+├── 🖥️ Infrastructure Screenshots
+│   └── kubernetes-dashboard.png
+│
+├── 🎥 Demo Video
+│   └── demo-video.mp4
+│
+└── 📊 Presentation Materials
+    ├── Product-Assistant-AI-Powered-Shopping-Experience.pptx
+    ├── Product-Assistant-AI-Powered-Shopping-Experience (1).pptx
+    ├── Product-Assistant-AI-Powered-Shopping-Experience.pdf
+    └── Product-Assistant-AI-Powered-Shopping-Experience (1).pdf
 ```
 
 ---
