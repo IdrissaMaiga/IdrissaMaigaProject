@@ -67,10 +67,22 @@ This folder contains visual demonstrations and presentation materials for the Pr
 
 ## 🎥 Demo Video
 
-**Demo Video**: `demo-video.mp4` - Full application demonstration
+> **Note**: The demo video file (522 MB) is too large for GitHub (max 100 MB). 
 
-> **Note**: The demo video file is included in this folder. For easier sharing, consider uploading to YouTube and adding the link here:
-> - YouTube: [Upload your demo video](https://www.youtube.com/upload)
+**To view the demo video:**
+1. Contact the author for the video file, or
+2. Upload to YouTube and add the link here:
+   - YouTube: [Upload your demo video](https://www.youtube.com/upload)
+   - Add link: `[Demo Video](YOUR_YOUTUBE_URL)`
+
+**Alternative**: Use Git Large File Storage (LFS) to track large files:
+```bash
+git lfs install
+git lfs track "*.mp4"
+git add .gitattributes
+git add Presentation/demo-video.mp4
+git commit -m "Add demo video with LFS"
+```
 
 ## 📝 How to Capture Screenshots
 

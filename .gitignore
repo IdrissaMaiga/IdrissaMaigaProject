@@ -264,6 +264,15 @@ yarn-error.log
 minikube-linux-amd64
 kubectl
 
+# Don't commit large video files (>100MB for GitHub)
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.mkv
+# Except small videos (manually track if needed with git-lfs)
+
 # Don't commit generated documentation (keep source .md files)
 # Add specific patterns if needed
 
