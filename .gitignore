@@ -243,14 +243,22 @@ yarn-error.log
 ###################
 # Project Specific
 ###################
-# Don't commit large binary files
+# Don't commit large binary files (with exceptions)
 *.pdf
 *.pptx
 *.png
 *.jpg
 *.jpeg
+
+# EXCEPT: Allow these specific folders
 !Resources/**/*.png
 !Resources/**/*.jpg
+!Resources/**/*.jpeg
+!Presentation/**/*.png
+!Presentation/**/*.jpg
+!Presentation/**/*.jpeg
+!Presentation/**/*.pdf
+!Presentation/**/*.pptx
 
 # Don't commit compiled binaries
 minikube-linux-amd64

@@ -2,6 +2,18 @@
 
 A comprehensive .NET MAUI mobile application that provides a **unified conversational shopping experience**. Users interact with an AI assistant through natural language to discover products, with search results displayed inline within the conversation. The app integrates with Arukereso.hu for product scraping, uses Auth0 for authentication, and leverages Google Gemini API for AI-powered conversations. Data is stored in SQLite for reliable data persistence and conversation memory.
 
+## 📸 Demo & Screenshots
+
+**View detailed screenshots and presentation materials**: [Presentation Folder](./Presentation/)
+
+### Quick Preview
+
+#### Kubernetes Dashboard
+![Kubernetes Dashboard](./Presentation/kubernetes-dashboard.png)
+*Kubernetes cluster managing all microservices (API, AI, Scraping) with automatic scaling and health monitoring*
+
+> **Note**: Additional screenshots showing the mobile app interface, chat functionality, and architecture diagrams are available in the [Presentation](./Presentation/) folder. For presentation materials (PowerPoint, PDF), see the same folder.
+
 ## 🎯 Key Innovation: Unified Search & Chat Interface
 
 Unlike traditional e-commerce apps with separate search and results pages, this application uses a **single conversational interface** where:
@@ -40,6 +52,7 @@ This README contains all essential information. For detailed technical documenta
 
 ## Table of Contents
 
+- [Demo & Screenshots](#demo--screenshots)
 - [Features](#features)
 - [Project Structure](#project-structure)
 - [Technologies Used](#technologies-used)
