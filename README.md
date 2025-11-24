@@ -2097,11 +2097,18 @@ See `AUTO_MIGRATION_SYSTEM.md` for technical details.
 
 ## License
 
-This project is developed as a semester assignment for .NET MAUI course.
+This project is an educational assignment. See [LICENSE.md](LICENSE.md) for details.
+
+Copyright (c) 2024-2025 Idrissa Maiga. All rights reserved.
 
 ## Author
 
-Idrissa Maiga
+**Idrissa Maiga**
+- GitHub: [@IdrissaMaiga](https://github.com/IdrissaMaiga)
+- Email: 145261070+IdrissaMaiga@users.noreply.github.com
+- Project: Product Assistant - AI-Powered Shopping Experience
+
+For the complete list of contributors and acknowledgments, see [AUTHORS.md](AUTHORS.md).
 
 ## Course Information
 
