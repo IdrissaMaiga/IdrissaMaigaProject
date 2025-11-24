@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="ShopAssistant.Views.LoginPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ShopAssistant.ViewModels"
+             x:DataType="vm:LoginViewModel"
+             Title=""
+             Shell.NavBarIsVisible="False">
+    
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+                
+        <!-- Beautiful Gradient Header -->
+                <Grid Grid.Row="0"
+                      BackgroundColor="{StaticResource Primary}"
+              Padding="24,40,24,24">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            
+            <!-- App Logo -->
+            <VerticalStackLayout Grid.Row="0" 
+                               Spacing="8"
+                               HorizontalOptions="Start"
+                               VerticalOptions="Start">
+                        <Border BackgroundColor="White"
+                                StrokeThickness="0"
+                        HeightRequest="80"
+                        WidthRequest="80"
+                        Opacity="0.95">
+                            <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="20"/>
+                            </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow Brush="Black" 
+                                Offset="0,4" 
+                                Radius="12" 
+                                Opacity="0.2"/>
+                    </Border.Shadow>
+                    <Image Source="logo.png"
+                                   Aspect="AspectFit"
+                           Margin="8"
+                           HeightRequest="64"
+                           WidthRequest="64"/>
+                        </Border>
+            </VerticalStackLayout>
+            
+            <!-- Welcome Message -->
+            <VerticalStackLayout Grid.Row="1" 
+                               Spacing="6"
+                               Margin="0,16,0,0">
+                <Label FontSize="28"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                       LineHeight="1.2">
+                    <Label.Text>
+                        <Binding Path="IsRegisterMode" Converter="{StaticResource BoolToTextConverter}">
+                            <Binding.ConverterParameter>
+                                <x:String>Create Account|Welcome Back</x:String>
+                            </Binding.ConverterParameter>
+                        </Binding>
+                    </Label.Text>
+                </Label>
+                
+                <Label FontSize="14"
+                       TextColor="White"
+                       Opacity="0.95"
+                       LineBreakMode="WordWrap"
+                       LineHeight="1.4">
+                    <Label.Text>
+                        <Binding Path="IsRegisterMode" Converter="{StaticResource BoolToTextConverter}">
+                            <Binding.ConverterParameter>
+                                <x:String>Join us and start shopping smarter|Sign in to continue your shopping journey</x:String>
+                            </Binding.ConverterParameter>
+                        </Binding>
+                    </Label.Text>
+                </Label>
+            </VerticalStackLayout>
+                </Grid>
+
+        <!-- Main Content with Gradient Background -->
+        <ScrollView Grid.Row="1" 
+                    BackgroundColor="#F0F4FF"
+                    VerticalScrollBarVisibility="Never">
+            <VerticalStackLayout Spacing="0" Padding="16,16,16,24">
+                        
+                <!-- Login Form Card with Shadow -->
+                <Border BackgroundColor="White"
+                        StrokeThickness="0"
+                        Padding="24,28"
+                        MaximumWidthRequest="500"
+                        HorizontalOptions="Fill"
+                        Margin="0,0,0,0">
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="24"/>
+                    </Border.StrokeShape>
+                    <Border.Shadow>
+                        <Shadow Brush="#0066FF" 
+                                Offset="0,8" 
+                                Radius="24" 
+                                Opacity="0.12"/>
+                    </Border.Shadow>
+                    
+                    <VerticalStackLayout Spacing="24">
+                        
+                        <!-- Username Field - Always Visible -->
+                        <VerticalStackLayout Spacing="10">
+                            <Label Text="Username"
+                                   FontSize="15"
+                                           FontAttributes="Bold"
+                                   TextColor="{StaticResource TextPrimary}"
+                                   Margin="0,0,0,4"/>
+                            <Border BackgroundColor="{StaticResource Gray50}"
+                                    StrokeThickness="2"
+                                    Stroke="{StaticResource BorderLight}">
+                                        <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12"/>
+                                        </Border.StrokeShape>
+                                        <Entry Text="{Binding Username}"
+                                               PlaceholderColor="{StaticResource TextTertiary}"
+                                               TextColor="{StaticResource TextPrimary}"
+                                               BackgroundColor="Transparent"
+                                       FontSize="16"
+                                       Margin="16,14"
+                                       IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                                       ClearButtonVisibility="WhileEditing">
+                                    <Entry.Placeholder>
+                                        <Binding Path="IsRegisterMode" Converter="{StaticResource BoolToTextConverter}">
+                                            <Binding.ConverterParameter>
+                                                <x:String>Choose a username|Enter your username</x:String>
+                                            </Binding.ConverterParameter>
+                                        </Binding>
+                                    </Entry.Placeholder>
+                                </Entry>
+                                    </Border>
+                                </VerticalStackLayout>
+
+                        <!-- Email Field (Registration Mode Only) -->
+                        <VerticalStackLayout Spacing="10"
+                                                   IsVisible="{Binding IsRegisterMode}">
+                                    <Label Text="Email Address"
+                                   FontSize="15"
+                                           FontAttributes="Bold"
+                                   TextColor="{StaticResource TextPrimary}"
+                                   Margin="0,0,0,4"/>
+                            <Border BackgroundColor="{StaticResource Gray50}"
+                                    StrokeThickness="2"
+                                    Stroke="{StaticResource BorderLight}">
+                                        <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12"/>
+                                        </Border.StrokeShape>
+                                        <Entry Text="{Binding Email}"
+                                               Placeholder="your.email@example.com"
+                                               PlaceholderColor="{StaticResource TextTertiary}"
+                                               TextColor="{StaticResource TextPrimary}"
+                                               BackgroundColor="Transparent"
+                                               Keyboard="Email"
+                                       FontSize="16"
+                                       Margin="16,14"
+                                       IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                                       ClearButtonVisibility="WhileEditing"/>
+                                    </Border>
+                                </VerticalStackLayout>
+
+                                <!-- Password Field -->
+                        <VerticalStackLayout Spacing="10">
+                                    <Label Text="Password"
+                                   FontSize="15"
+                                           FontAttributes="Bold"
+                                   TextColor="{StaticResource TextPrimary}"
+                                   Margin="0,0,0,4"/>
+                            <Border BackgroundColor="{StaticResource Gray50}"
+                                    StrokeThickness="2"
+                                    Stroke="{StaticResource BorderLight}">
+                                        <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12"/>
+                                        </Border.StrokeShape>
+                                        <Entry Text="{Binding Password}"
+                                       Placeholder="Enter your password"
+                                               PlaceholderColor="{StaticResource TextTertiary}"
+                                               TextColor="{StaticResource TextPrimary}"
+                                               BackgroundColor="Transparent"
+                                               IsPassword="True"
+                                       FontSize="16"
+                                       Margin="16,14"
+                                               IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                                       ReturnCommand="{Binding LoginCommand}"
+                                       ClearButtonVisibility="WhileEditing"/>
+                                    </Border>
+                                </VerticalStackLayout>
+
+                        <!-- Primary Action Button -->
+                        <Button Command="{Binding LoginCommand}"
+                                        IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                                        BackgroundColor="{StaticResource Primary}"
+                                        TextColor="White"
+                                FontSize="17"
+                                        FontAttributes="Bold"
+                                HeightRequest="56"
+                                CornerRadius="14"
+                                Margin="0,8,0,0">
+                            <Button.Text>
+                                <Binding Path="IsRegisterMode" Converter="{StaticResource BoolToTextConverter}">
+                                    <Binding.ConverterParameter>
+                                        <x:String>Create Account|Sign In</x:String>
+                                    </Binding.ConverterParameter>
+                                </Binding>
+                            </Button.Text>
+                            <Button.Shadow>
+                                <Shadow Brush="{StaticResource Primary}" 
+                                        Offset="0,4" 
+                                        Radius="12" 
+                                        Opacity="0.3"/>
+                            </Button.Shadow>
+                        </Button>
+
+                                <!-- Loading Indicator -->
+                                <ActivityIndicator IsRunning="{Binding IsBusy}"
+                                                  IsVisible="{Binding IsBusy}"
+                                                  Color="{StaticResource Primary}"
+                                          HeightRequest="40"
+                                          WidthRequest="40"
+                                          HorizontalOptions="Center"
+                                          Margin="0,8"/>
+
+                        <!-- Elegant Divider -->
+                                <Grid ColumnDefinitions="*,Auto,*"
+                              Margin="0,24,0,24"
+                              ColumnSpacing="16"
+                              VerticalOptions="Center">
+                                    <BoxView Grid.Column="0"
+                                            HeightRequest="1"
+                                            BackgroundColor="{StaticResource BorderLight}"
+                                            VerticalOptions="Center"/>
+                                    <Label Grid.Column="1"
+                                           Text="OR"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                           TextColor="{StaticResource TextTertiary}"
+                                   BackgroundColor="White"
+                                   Padding="12,0"
+                                           VerticalOptions="Center"/>
+                                    <BoxView Grid.Column="2"
+                                            HeightRequest="1"
+                                            BackgroundColor="{StaticResource BorderLight}"
+                                            VerticalOptions="Center"/>
+                                </Grid>
+
+                        <!-- Demo Login Button -->
+                                <Button Text="Try Demo Account"
+                                        Command="{Binding DemoLoginCommand}"
+                                        IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                                        BackgroundColor="Transparent"
+                                        TextColor="{StaticResource Primary}"
+                                        BorderColor="{StaticResource Primary}"
+                                        BorderWidth="2"
+                                FontSize="16"
+                                        FontAttributes="Bold"
+                                HeightRequest="52"
+                                CornerRadius="14"/>
+                            </VerticalStackLayout>
+                        </Border>
+
+                        <!-- Toggle Login/Register -->
+                        <HorizontalStackLayout HorizontalOptions="Center"
+                                             Spacing="6"
+                                     Margin="0,32,0,0">
+                    <Label TextColor="{StaticResource TextSecondary}"
+                           FontSize="15">
+                        <Label.Text>
+                            <Binding Path="IsRegisterMode" Converter="{StaticResource BoolToTextConverter}">
+                                <Binding.ConverterParameter>
+                                    <x:String>Already have an account?|Don't have an account?</x:String>
+                                </Binding.ConverterParameter>
+                            </Binding>
+                        </Label.Text>
+                    </Label>
+                            <Label TextColor="{StaticResource Primary}"
+                           FontSize="15"
+                           FontAttributes="Bold">
+                                <Label.Text>
+                                    <Binding Path="IsRegisterMode" Converter="{StaticResource BoolToTextConverter}" ConverterParameter="Sign In|Create Account"/>
+                                </Label.Text>
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ToggleRegisterModeCommand}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+
+                        <!-- Footer -->
+                <VerticalStackLayout Spacing="6"
+                                           Margin="0,48,0,0"
+                                           HorizontalOptions="Center">
+                            <Label Text="© 2024 Shop Assistant"
+                           FontSize="13"
+                                   TextColor="{StaticResource TextTertiary}"
+                                   HorizontalOptions="Center"/>
+                    <Label Text="🔒 Secure Authentication · Privacy Protected"
+                           FontSize="12"
+                                   TextColor="{StaticResource TextTertiary}"
+                           HorizontalOptions="Center"
+                           Opacity="0.8"/>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

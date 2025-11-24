@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="ShopAssistant.Views.SettingsPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:ShopAssistant.ViewModels"
+             x:DataType="viewmodel:SettingsViewModel"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource BackgroundSecondary}">
+    
+    <ScrollView>
+        <VerticalStackLayout Spacing="0" Padding="0">
+            <!-- API Settings Card -->
+            <Border BackgroundColor="White"
+                    Padding="20,24"
+                    Margin="12,12,12,12">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16"/>
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="0,2"
+                            Radius="8"
+                            Opacity="0.08"/>
+                </Border.Shadow>
+                
+                <VerticalStackLayout Spacing="20">
+                    <!-- Header -->
+                    <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                        <Label Text="🔑"
+                               FontSize="24"
+                               VerticalOptions="Center"/>
+                        <Label Text="Gemini API Settings"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    
+                    <!-- Description -->
+                    <Label Text="Enter your Google Gemini API key here. The key will be stored securely on your device."
+                           FontSize="14"
+                           TextColor="{StaticResource TextSecondary}"
+                           LineBreakMode="WordWrap"/>
+                    
+                    <!-- API Key Field -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Text="API Key"
+                               FontSize="14"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"/>
+                        <Border BackgroundColor="{StaticResource BackgroundSecondary}"
+                                StrokeThickness="1"
+                                Stroke="{StaticResource BorderMedium}">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="8"/>
+                            </Border.StrokeShape>
+                            <Entry Text="{Binding ApiKey}"
+                                   Placeholder="Enter your Gemini API key"
+                                   PlaceholderColor="{StaticResource TextTertiary}"
+                                   TextColor="{StaticResource TextPrimary}"
+                                   IsPassword="True"
+                                   BackgroundColor="Transparent"
+                                   FontSize="15"
+                                   Margin="12,8"
+                                   ReturnType="Done"
+                                   IsEnabled="{Binding IsNotBusy}" />
+                        </Border>
+                        <Label Text="Get your API key from: https://makersuite.google.com/app/apikey"
+                               FontSize="12"
+                               TextColor="{StaticResource TextTertiary}"
+                               LineBreakMode="WordWrap"/>
+                    </VerticalStackLayout>
+                    
+                    <!-- Status Indicator -->
+                    <Border BackgroundColor="{Binding IsApiKeySet, Converter={StaticResource ApiKeyStatusColorConverter}}"
+                            Padding="12,8"
+                            IsVisible="{Binding IsApiKeySet}">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="8"/>
+                        </Border.StrokeShape>
+                        <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                            <Label Text="✓"
+                                   TextColor="White"
+                                   FontSize="14"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"/>
+                            <Label Text="API key is configured"
+                                   TextColor="White"
+                                   FontSize="13"
+                                   FontAttributes="Bold"
+                                   VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </Border>
+                    
+                    <!-- Action Buttons -->
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                        <Button Grid.Column="0"
+                                Text="Save"
+                                Command="{Binding SaveApiKeyCommand}"
+                                IsEnabled="{Binding IsNotBusy}"
+                                BackgroundColor="{StaticResource Primary}"
+                                TextColor="White"
+                                FontSize="15"
+                                FontAttributes="Bold"
+                                HeightRequest="48"
+                                CornerRadius="8"/>
+                        <Button Grid.Column="1"
+                                Text="Clear"
+                                Command="{Binding ClearApiKeyCommand}"
+                                IsEnabled="{Binding IsNotBusy}"
+                                BackgroundColor="{StaticResource Error}"
+                                TextColor="White"
+                                FontSize="15"
+                                FontAttributes="Bold"
+                                HeightRequest="48"
+                                CornerRadius="8"/>
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Account Settings Card -->
+            <Border BackgroundColor="White"
+                    Padding="20,24"
+                    Margin="12,0,12,12">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16"/>
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="0,2"
+                            Radius="8"
+                            Opacity="0.08"/>
+                </Border.Shadow>
+                
+                <VerticalStackLayout Spacing="20">
+                    <!-- Header -->
+                    <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                        <Label Text="👤"
+                               FontSize="24"
+                               VerticalOptions="Center"/>
+                        <Label Text="Account"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    
+                    <!-- Logout Button -->
+                    <Button Text="Logout"
+                            Command="{Binding LogoutCommand}"
+                            IsEnabled="{Binding IsNotBusy}"
+                            BackgroundColor="{StaticResource Error}"
+                            TextColor="White"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            HeightRequest="48"
+                            CornerRadius="8"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Debug Settings Card -->
+            <Border BackgroundColor="White"
+                    Padding="20,24"
+                    Margin="12,0,12,12">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="16"/>
+                </Border.StrokeShape>
+                <Border.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="0,2"
+                            Radius="8"
+                            Opacity="0.08"/>
+                </Border.Shadow>
+                
+                <VerticalStackLayout Spacing="20">
+                    <!-- Header -->
+                    <HorizontalStackLayout Spacing="12" VerticalOptions="Center">
+                        <Label Text="🐛"
+                               FontSize="24"
+                               VerticalOptions="Center"/>
+                        <Label Text="Debug"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"
+                               VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                    
+                    <!-- Description -->
+                    <Label Text="View and copy application debug logs. Only shows logs from your app, filtered from system messages."
+                           FontSize="14"
+                           TextColor="{StaticResource TextSecondary}"
+                           LineBreakMode="WordWrap"/>
+                    
+                    <!-- View Debug Logs Button -->
+                    <Button Text="View Debug Logs"
+                            Command="{Binding ViewDebugLogsCommand}"
+                            IsEnabled="{Binding IsNotBusy}"
+                            BackgroundColor="#007AFF"
+                            TextColor="White"
+                            FontSize="15"
+                            FontAttributes="Bold"
+                            HeightRequest="48"
+                            CornerRadius="8"/>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- App Info Footer -->
+            <VerticalStackLayout Spacing="8"
+                               Padding="16,24"
+                               HorizontalOptions="Center">
+                <Label Text="Shop Assistant"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="{StaticResource TextPrimary}"
+                       HorizontalOptions="Center"/>
+                <Label Text="© 2024 All rights reserved"
+                       FontSize="12"
+                       TextColor="{StaticResource TextTertiary}"
+                       HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

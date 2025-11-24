@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-db-data-pvc
+  namespace: product-assistant
+spec:
+  accessModes:
+    - ReadWriteMany  # Changed to ReadWriteMany so both services can access it
+  resources:
+    requests:
+      storage: 1Gi
+  # Remove storageClassName to use cluster default, or set to your cluster's storage class
+  # storageClassName: standard
+
+

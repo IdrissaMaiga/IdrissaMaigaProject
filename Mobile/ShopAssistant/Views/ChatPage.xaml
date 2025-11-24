@@ -1,0 +1,584 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="ShopAssistant.Views.ChatPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ShopAssistant.ViewModels"
+             xmlns:models="clr-namespace:ProductAssistant.Core.Models;assembly=ProductAssistant.Core"
+             xmlns:converters="clr-namespace:ShopAssistant.Converters"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:DataType="vm:ChatViewModel"
+             Title="{Binding Title}"
+             BackgroundColor="{StaticResource BackgroundSecondary}">
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:ConversationSelectionBackgroundMultiConverter x:Key="ConversationSelectionBackgroundMultiConverter"/>
+            <converters:ConversationSelectionBorderMultiConverter x:Key="ConversationSelectionBorderMultiConverter"/>
+            <converters:ConversationSelectionTextMultiConverter x:Key="ConversationSelectionTextMultiConverter"/>
+            <converters:ImageUrlProxyConverter x:Key="ImageUrlProxyConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <Grid x:Name="MainGrid" ColumnDefinitions="*">
+        <!-- Chat Area -->
+        <Grid Grid.Column="0" RowDefinitions="Auto,Auto,*,Auto" Padding="0" Margin="0">
+            
+            <!-- Overlay to close sidebar when tapping outside -->
+            <Border Grid.RowSpan="4"
+                    BackgroundColor="Black"
+                    Opacity="0.3"
+                    IsVisible="{Binding IsSidebarVisible}"
+                    ZIndex="999">
+                <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding ToggleSidebarCommand}"/>
+                </Border.GestureRecognizers>
+            </Border>
+            <!-- Network Status Banner -->
+            <Border Grid.Row="0"
+                    BackgroundColor="{StaticResource Error}"
+                    Padding="12,8"
+                    IsVisible="{Binding IsOnline, Converter={StaticResource InvertedBoolConverter}}">
+                <HorizontalStackLayout Spacing="8"
+                                      HorizontalOptions="Center">
+                    <Label Text="●"
+                           TextColor="White"
+                           FontSize="16"
+                           VerticalOptions="Center"/>
+                    <Label Text="{Binding OfflineText}"
+                           TextColor="White"
+                           FontSize="14"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center" />
+                </HorizontalStackLayout>
+            </Border>
+            
+            <!-- Header -->
+            <Border Grid.Row="1"
+                    BackgroundColor="White"
+                    Padding="20,16"
+                    Margin="0,0,0,1">
+                <Border.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="0,2"
+                            Radius="8"
+                            Opacity="0.08"/>
+                </Border.Shadow>
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <!-- Sidebar Toggle Button -->
+                    <Button Grid.Column="0"
+                            Text="☰"
+                            FontSize="22"
+                            WidthRequest="44"
+                            HeightRequest="44"
+                            Command="{Binding ToggleSidebarCommand}"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource TextPrimary}"
+                            BorderWidth="0"
+                            Padding="0"
+                            Margin="0,0,12,0"
+                            VerticalOptions="Center"/>
+                    <HorizontalStackLayout Grid.Column="1" Spacing="12" VerticalOptions="Center">
+                        <Label Text="💬"
+                               FontSize="26"
+                               VerticalOptions="Center"/>
+                        <Label Text="{Binding HeaderTitle}"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"
+                               VerticalOptions="Center"
+                               MaxLines="1"
+                               LineBreakMode="TailTruncation"/>
+                    </HorizontalStackLayout>
+                    <!-- Selected Products Actions -->
+                    <HorizontalStackLayout Grid.Column="2" 
+                                          Spacing="6"
+                                          VerticalOptions="Center"
+                                          IsVisible="{Binding SelectedProducts.Count, Converter={StaticResource CountToVisibilityConverter}}">
+                        <Border BackgroundColor="{StaticResource Primary}"
+                                Padding="8,4">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12"/>
+                            </Border.StrokeShape>
+                            <Label Text="{Binding SelectedProducts.Count, StringFormat='{0} selected'}"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   TextColor="White"
+                                   VerticalOptions="Center"/>
+                        </Border>
+                        <Button Text="{Binding SaveButtonText}"
+                                Command="{Binding SaveSelectedToCollectionCommand}"
+                                BackgroundColor="{StaticResource Success}"
+                                TextColor="White"
+                                FontSize="11"
+                                FontAttributes="Bold"
+                                Padding="10,6"
+                                MinimumWidthRequest="60"
+                                CornerRadius="12"
+                                IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"/>
+                    </HorizontalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Messages List -->
+            <CollectionView Grid.Row="2"
+                           x:Name="MessagesCollectionView"
+                           ItemsSource="{Binding Messages}"
+                           BackgroundColor="{StaticResource BackgroundSecondary}"
+                           RemainingItemsThreshold="5"
+                           RemainingItemsThresholdReached="OnRemainingItemsThresholdReached"
+                           Scrolled="OnCollectionViewScrolled">
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout Padding="40"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center">
+                        <Label Text="💭"
+                               FontSize="64"
+                               HorizontalOptions="Center"/>
+                        <Label Text="{Binding EmptyStateTitle}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="{StaticResource TextPrimary}"
+                               HorizontalOptions="Center"
+                               Margin="0,16,0,4"/>
+                        <Label Text="{Binding EmptyStateDescription}"
+                               FontSize="14"
+                               TextColor="{StaticResource TextSecondary}"
+                               HorizontalOptions="Center"
+                               LineBreakMode="WordWrap"
+                               Margin="20,0"/>
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:ChatMessage">
+                        <VerticalStackLayout Padding="16,12" Margin="0,0,0,12" Spacing="12">
+                            <!-- Message Text -->
+                            <Grid ColumnDefinitions="Auto,*,Auto">
+                                <Border Grid.Column="{Binding IsUserMessage, Converter={StaticResource MessageColumnConverter}}"
+                                        BackgroundColor="{Binding IsUserMessage, Converter={StaticResource MessageColorConverter}}"
+                                        Padding="18,14"
+                                        HorizontalOptions="{Binding IsUserMessage, Converter={StaticResource MessageAlignmentConverter}}"
+                                        Margin="0"
+                                        MaximumWidthRequest="380">
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="20"/>
+                                    </Border.StrokeShape>
+                                    <Border.Shadow>
+                                        <Shadow Brush="Black"
+                                                Offset="0,2"
+                                                Radius="8"
+                                                Opacity="0.1"/>
+                                    </Border.Shadow>
+                                    <!-- Use Grid to contain WebView (for markdown) and Label (for user messages) -->
+                                    <Grid>
+                                        <!-- WebView for assistant messages with markdown rendering -->
+                                        <WebView IsVisible="{Binding IsUserMessage, Converter={StaticResource InvertedBoolConverter}}"
+                                                 BackgroundColor="Transparent"
+                                                 VerticalOptions="Start"
+                                                 HorizontalOptions="Fill"
+                                                 MinimumHeightRequest="50"
+                                                 x:Name="MarkdownWebView"
+                                                 BindingContextChanged="OnMarkdownWebViewBindingContextChanged"
+                                                 Loaded="OnWebViewLoaded"
+                                                 Navigating="OnWebViewNavigating" />
+                                        <!-- Label for user messages -->
+                                        <Label Text="{Binding Text}"
+                                               IsVisible="{Binding IsUserMessage}"
+                                               TextColor="{Binding IsUserMessage, Converter={StaticResource MessageTextColorConverter}}"
+                                               FontSize="15"
+                                               LineHeight="1.5"
+                                               LineBreakMode="WordWrap"
+                                               MaxLines="0" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                            
+                            <!-- Products Table (only for assistant messages) -->
+                            <Border IsVisible="{Binding Products.Count, Converter={StaticResource CountToVisibilityConverter}}"
+                                    BackgroundColor="White"
+                                    Padding="0"
+                                    Margin="8,4,8,0"
+                                    HorizontalOptions="Fill">
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12"/>
+                                </Border.StrokeShape>
+                                <Border.Shadow>
+                                    <Shadow Brush="Black"
+                                            Offset="0,2"
+                                            Radius="8"
+                                            Opacity="0.08"/>
+                                </Border.Shadow>
+                                <VerticalStackLayout Spacing="0">
+                                    <!-- Table Header -->
+                                    <Border BackgroundColor="{StaticResource Primary}"
+                                            Padding="12,10">
+                                        <Label Text="Products"
+                                               FontSize="16"
+                                               FontAttributes="Bold"
+                                               TextColor="White"/>
+                                    </Border>
+                                    
+                                    <!-- Products List -->
+                                    <CollectionView ItemsSource="{Binding Products}"
+                                                   BackgroundColor="Transparent"
+                                                   SelectionMode="None"
+                                                   ItemSizingStrategy="MeasureFirstItem">
+                                        <CollectionView.ItemTemplate>
+                                            <DataTemplate x:DataType="models:Product">
+                                                <Border Padding="12,10"
+                                                        Margin="0,0,0,1"
+                                                        BackgroundColor="{StaticResource BackgroundSecondary}">
+                                                    <Grid ColumnDefinitions="100,*,Auto,70"
+                                                          ColumnSpacing="8"
+                                                          RowDefinitions="Auto,Auto">
+                                                        <!-- Product Image -->
+                                                        <Border Grid.Column="0"
+                                                                Grid.RowSpan="2"
+                                                                WidthRequest="100"
+                                                                HeightRequest="100"
+                                                                BackgroundColor="White"
+                                                                Padding="4"
+                                                                VerticalOptions="Start">
+                                                            <Border.StrokeShape>
+                                                                <RoundRectangle CornerRadius="8"/>
+                                                            </Border.StrokeShape>
+                                                            <Border.Stroke>
+                                                                <SolidColorBrush Color="{StaticResource BorderLight}"/>
+                                                            </Border.Stroke>
+                                                            <Border.StrokeThickness>1</Border.StrokeThickness>
+                                                            <!-- Product Image with placeholder -->
+                                                            <Grid>
+                                                                <!-- Product Image - proxied through backend to bypass CDN restrictions -->
+                                                                <Image Source="{Binding ImageUrl, Converter={StaticResource ImageUrlProxyConverter}}"
+                                                                       Aspect="AspectFit"
+                                                                       BackgroundColor="Transparent"/>
+                                                                
+                                                                <!-- Placeholder - shown when ImageUrl is null or empty -->
+                                                                <Border BackgroundColor="{StaticResource Gray50}"
+                                                                        HorizontalOptions="Fill"
+                                                                        VerticalOptions="Fill">
+                                                                    <Border.Triggers>
+                                                                        <DataTrigger TargetType="Border" Binding="{Binding ImageUrl, Converter={StaticResource StringToBoolConverter}}" Value="True">
+                                                                            <Setter Property="IsVisible" Value="False"/>
+                                                                        </DataTrigger>
+                                                                    </Border.Triggers>
+                                                                    <Border.StrokeShape>
+                                                                        <RoundRectangle CornerRadius="4"/>
+                                                                    </Border.StrokeShape>
+                                                                    <VerticalStackLayout HorizontalOptions="Center"
+                                                                                       VerticalOptions="Center"
+                                                                                       Spacing="4">
+                                                                        <Label Text="🛍️"
+                                                                               FontSize="32"
+                                                                               HorizontalOptions="Center"
+                                                                               VerticalOptions="Center"
+                                                                               Opacity="0.5"/>
+                                                                        <Label Text="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.NoImageText}"
+                                                                               FontSize="9"
+                                                                               TextColor="{StaticResource TextTertiary}"
+                                                                               HorizontalOptions="Center"
+                                                                               VerticalOptions="Center"
+                                                                               Opacity="0.7"/>
+                                                                    </VerticalStackLayout>
+                                                                </Border>
+                                                            </Grid>
+                                                        </Border>
+                                                        
+                                                        <!-- Product Name -->
+                                                        <Label Grid.Column="1"
+                                                               Grid.Row="0"
+                                                               Text="{Binding Name}"
+                                                               FontSize="14"
+                                                               FontAttributes="Bold"
+                                                               TextColor="{StaticResource TextPrimary}"
+                                                               MaxLines="2"
+                                                               LineBreakMode="TailTruncation"
+                                                               VerticalOptions="Start"/>
+                                                        
+                                                        <!-- Price -->
+                                                        <Label Grid.Column="2"
+                                                               Grid.Row="0"
+                                                               FontSize="14"
+                                                               FontAttributes="Bold"
+                                                               TextColor="{StaticResource Primary}"
+                                                               VerticalOptions="Start"
+                                                               HorizontalOptions="End"
+                                                               MaxLines="1"
+                                                               LineBreakMode="TailTruncation">
+                                                            <Label.Text>
+                                                                <MultiBinding StringFormat="{}{0:#,##0} {1}">
+                                                                    <Binding Path="Price" />
+                                                                    <Binding Path="Currency" />
+                                                                </MultiBinding>
+                                                            </Label.Text>
+                                                        </Label>
+                                                        
+                                                        <!-- Store Name -->
+                                                        <HorizontalStackLayout Grid.Column="1"
+                                                                              Grid.Row="1"
+                                                                              Spacing="4"
+                                                                              Margin="0,2,0,0">
+                                                            <Label Text="🏪"
+                                                                   FontSize="12"
+                                                                   VerticalOptions="Center"/>
+                                                            <Label Text="{Binding StoreName}"
+                                                                   FontSize="12"
+                                                                   TextColor="{StaticResource TextSecondary}"
+                                                                   MaxLines="1"
+                                                                   LineBreakMode="TailTruncation"
+                                                                   VerticalOptions="Center"/>
+                                                        </HorizontalStackLayout>
+                                                        
+                                                        <!-- Add to Collection Button -->
+                                                        <Button Grid.Column="3"
+                                                                Grid.RowSpan="2"
+                                                                WidthRequest="70"
+                                                                HeightRequest="36"
+                                                                FontSize="10"
+                                                                FontAttributes="Bold"
+                                                                CornerRadius="8"
+                                                                VerticalOptions="Center"
+                                                                Padding="4,0"
+                                                                Margin="4,0,0,0"
+                                                                Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.ToggleProductSelectionCommand}"
+                                                                CommandParameter="{Binding .}">
+                                                            <Button.Text>
+                                                                <Binding Path="BindingContext.SelectedProducts" 
+                                                                         Source="{RelativeSource AncestorType={x:Type ContentPage}}">
+                                                                    <Binding.Converter>
+                                                                        <converters:ProductSelectionButtonConverter/>
+                                                                    </Binding.Converter>
+                                                                    <Binding.ConverterParameter>
+                                                                        <Binding Path="." />
+                                                                    </Binding.ConverterParameter>
+                                                                </Binding>
+                                                            </Button.Text>
+                                                            <Button.BackgroundColor>
+                                                                <Binding Path="BindingContext.SelectedProducts" 
+                                                                         Source="{RelativeSource AncestorType={x:Type ContentPage}}">
+                                                                    <Binding.Converter>
+                                                                        <converters:ProductSelectionColorConverter/>
+                                                                    </Binding.Converter>
+                                                                    <Binding.ConverterParameter>
+                                                                        <Binding Path="." />
+                                                                    </Binding.ConverterParameter>
+                                                                </Binding>
+                                                            </Button.BackgroundColor>
+                                                        </Button>
+                                                    </Grid>
+                                                </Border>
+                                            </DataTemplate>
+                                        </CollectionView.ItemTemplate>
+                                    </CollectionView>
+                                </VerticalStackLayout>
+                            </Border>
+                        </VerticalStackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- Input Area -->
+            <Border Grid.Row="3"
+                    BackgroundColor="White"
+                    Padding="12,10"
+                    Margin="0">
+                <Border.Shadow>
+                    <Shadow Brush="Black"
+                            Offset="0,-2"
+                            Radius="8"
+                            Opacity="0.08"/>
+                </Border.Shadow>
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Border Grid.Column="0"
+                            BackgroundColor="{StaticResource Gray50}"
+                            StrokeThickness="0"
+                            HorizontalOptions="Fill">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20"/>
+                        </Border.StrokeShape>
+                        <Entry Text="{Binding UserMessage}"
+                               Placeholder="{Binding InputPlaceholder}"
+                               PlaceholderColor="{StaticResource TextTertiary}"
+                               TextColor="{StaticResource TextPrimary}"
+                               BackgroundColor="Transparent"
+                               FontSize="14"
+                               Margin="16,12"
+                               ReturnCommand="{Binding SendMessageCommand}"
+                               IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                               ClearButtonVisibility="WhileEditing"/>
+                    </Border>
+                    <Button Grid.Column="1"
+                            Text="{Binding SendButtonText}"
+                            Command="{Binding SendMessageCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InvertedBoolConverter}}"
+                            BackgroundColor="{StaticResource Primary}"
+                            TextColor="White"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            WidthRequest="80"
+                            HeightRequest="44"
+                            CornerRadius="22"
+                            VerticalOptions="Center">
+                        <Button.Shadow>
+                            <Shadow Brush="{StaticResource Primary}"
+                                    Offset="0,2"
+                                    Radius="8"
+                                    Opacity="0.3"/>
+                        </Button.Shadow>
+                    </Button>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- Conversations Sidebar - Overlay on mobile -->
+        <Border Grid.Column="0"
+                Grid.ColumnSpan="1"
+                BackgroundColor="White"
+                HorizontalOptions="End"
+                WidthRequest="320"
+                StrokeThickness="1"
+                Stroke="{StaticResource BorderLight}"
+                x:Name="Sidebar"
+                IsVisible="{Binding IsSidebarVisible}"
+                ZIndex="1000">
+            <Border.Shadow>
+                <Shadow Brush="Black"
+                        Offset="-2,0"
+                        Radius="8"
+                        Opacity="0.15"/>
+            </Border.Shadow>
+            <Grid RowDefinitions="Auto,*,Auto" Padding="0">
+                <!-- Header -->
+                <Border Grid.Row="0"
+                        BackgroundColor="{StaticResource Primary}"
+                        Padding="16,12">
+                    <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                        <Label Grid.Column="0"
+                               Text="{Binding ConversationsHeaderText}"
+                               FontSize="18"
+                               FontAttributes="Bold"
+                               TextColor="White"
+                               VerticalOptions="Center"/>
+                        <Button Grid.Column="1"
+                                Text="+"
+                                FontSize="24"
+                                WidthRequest="36"
+                                HeightRequest="36"
+                                Command="{Binding CreateNewConversationCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="White"
+                                BorderWidth="0"
+                                Padding="0"
+                                CornerRadius="18"/>
+                        <Button Grid.Column="2"
+                                Text="✕"
+                                FontSize="20"
+                                WidthRequest="36"
+                                HeightRequest="36"
+                                Command="{Binding ToggleSidebarCommand}"
+                                BackgroundColor="Transparent"
+                                TextColor="White"
+                                BorderWidth="0"
+                                Padding="0"
+                                CornerRadius="18"/>
+                    </Grid>
+                </Border>
+
+                <!-- Conversations List -->
+                <CollectionView Grid.Row="1"
+                               ItemsSource="{Binding Conversations}"
+                               SelectionMode="None"
+                               BackgroundColor="{StaticResource BackgroundSecondary}">
+                    <CollectionView.EmptyView>
+                        <VerticalStackLayout Padding="40"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="Center">
+                            <Label Text="📋"
+                                   FontSize="48"
+                                   HorizontalOptions="Center"/>
+                            <Label Text="{Binding NoConversationsText}"
+                                   FontSize="14"
+                                   TextColor="{StaticResource TextSecondary}"
+                                   HorizontalOptions="Center"
+                                   Margin="0,8,0,0"/>
+                        </VerticalStackLayout>
+                    </CollectionView.EmptyView>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Conversation">
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RenameText}"
+                                                  BackgroundColor="{StaticResource Warning}"
+                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.RenameConversationCommand}"
+                                                  CommandParameter="{Binding .}"/>
+                                        <SwipeItem Text="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteText}"
+                                                  BackgroundColor="{StaticResource Error}"
+                                                  Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteConversationCommand}"
+                                                  CommandParameter="{Binding .}"/>
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+
+                                <Border Padding="12"
+                                       Margin="8,4"
+                                       StrokeThickness="2">
+                                    <Border.BackgroundColor>
+                                        <MultiBinding Converter="{StaticResource ConversationSelectionBackgroundMultiConverter}">
+                                            <Binding Path="Id"/>
+                                            <Binding Source="{RelativeSource AncestorType={x:Type ContentPage}}" Path="BindingContext.SelectedConversation.Id"/>
+                                        </MultiBinding>
+                                    </Border.BackgroundColor>
+                                    <Border.Stroke>
+                                        <MultiBinding Converter="{StaticResource ConversationSelectionBorderMultiConverter}">
+                                            <Binding Path="Id"/>
+                                            <Binding Source="{RelativeSource AncestorType={x:Type ContentPage}}" Path="BindingContext.SelectedConversation.Id"/>
+                                        </MultiBinding>
+                                    </Border.Stroke>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12"/>
+                                    </Border.StrokeShape>
+                                    <Border.Shadow>
+                                        <Shadow Brush="Black"
+                                                Offset="0,1"
+                                                Radius="4"
+                                                Opacity="0.05"/>
+                                    </Border.Shadow>
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.SelectConversationCommand}"
+                                                             CommandParameter="{Binding .}"/>
+                                    </Border.GestureRecognizers>
+                                    <VerticalStackLayout Spacing="6">
+                                        <Label Text="{Binding Title}"
+                                               FontSize="14"
+                                               FontAttributes="Bold"
+                                               MaxLines="1"
+                                               LineBreakMode="TailTruncation">
+                                            <Label.TextColor>
+                                                <MultiBinding Converter="{StaticResource ConversationSelectionTextMultiConverter}">
+                                                    <Binding Path="Id"/>
+                                                    <Binding Source="{RelativeSource AncestorType={x:Type ContentPage}}" Path="BindingContext.SelectedConversation.Id"/>
+                                                </MultiBinding>
+                                            </Label.TextColor>
+                                        </Label>
+                                        <Label Text="{Binding UpdatedAt, StringFormat='{0:MMM dd, hh:mm tt}'}"
+                                               FontSize="11"
+                                               TextColor="{StaticResource TextSecondary}"/>
+                                    </VerticalStackLayout>
+                                </Border>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!-- Footer -->
+                <Border Grid.Row="2"
+                        BackgroundColor="{StaticResource BackgroundSecondary}"
+                        Padding="12">
+                    <Label Text="{Binding NewChatHintText}"
+                           FontSize="11"
+                           TextColor="{StaticResource TextTertiary}"
+                           HorizontalOptions="Center"/>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</ContentPage>

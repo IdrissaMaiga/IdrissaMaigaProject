@@ -1,0 +1,45 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: product-assistant-ingress
+  namespace: product-assistant
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      # AI service - routes like /api/ai
+      # Must come before /api to match first
+      - path: /api/ai
+        pathType: Prefix
+        backend:
+          service:
+            name: ai-service
+            port:
+              number: 8080
+      # Scraping service - routes like /api/scraping
+      # Must come before /api to match first
+      - path: /api/scraping
+        pathType: Prefix
+        backend:
+          service:
+            name: scraping-service
+            port:
+              number: 8080
+      # API service - routes like /api/products, /api/chat, /api/auth, /api/health, etc.
+      # This catches all other /api/* routes
+      # No rewrite needed - API service expects /api prefix
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 8080
+
+
+
+
+

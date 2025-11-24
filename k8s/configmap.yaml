@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: product-assistant-config
+  namespace: product-assistant
+data:
+  # Database path
+  Database__Path: "/app/data/productassistant.db"
+  
+  # Service URLs - Using Services section (ServiceOptions)
+  # Double underscore (__) represents nested configuration in .NET
+  Services__ScrapingServiceUrl: "http://scraping-service:8080"
+  Services__AIServiceUrl: "http://ai-service:8080"
+  Services__HttpClientTimeoutMinutes: "2"
+  
+  # Logging
+  Logging__LogLevel__Default: "Information"
+  Logging__LogLevel__Microsoft.AspNetCore: "Warning"
+

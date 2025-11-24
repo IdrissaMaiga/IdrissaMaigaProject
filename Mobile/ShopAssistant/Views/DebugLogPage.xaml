@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="ShopAssistant.Views.DebugLogPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:ShopAssistant.ViewModels"
+             x:DataType="viewmodels:DebugLogViewModel"
+             Title="{Binding Title}">
+    
+    <Grid RowDefinitions="Auto,Auto,*" 
+          Padding="10"
+          RowSpacing="10">
+        
+        <!-- Search Bar -->
+        <SearchBar Grid.Row="0"
+                   Text="{Binding SearchText}"
+                   Placeholder="Search logs..."
+                   BackgroundColor="White"
+                   Margin="0,0,0,10"/>
+        
+        <!-- Action Buttons -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*" ColumnSpacing="10">
+            <Button Grid.Column="0"
+                    Text="Back to App"
+                    Command="{Binding GoBackCommand}"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="#5856D6"
+                    TextColor="White"
+                    FontAttributes="Bold"/>
+            <Button Grid.Column="1"
+                    Text="Copy All"
+                    Command="{Binding CopyLogsCommand}"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="#007AFF"
+                    TextColor="White"/>
+            <Button Grid.Column="2"
+                    Text="Clear"
+                    Command="{Binding ClearLogsCommand}"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="#FF3B30"
+                    TextColor="White"/>
+            <Button Grid.Column="3"
+                    Text="Refresh"
+                    Command="{Binding RefreshLogsCommand}"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="#34C759"
+                    TextColor="White"/>
+        </Grid>
+        
+        <!-- Log Display -->
+        <Border Grid.Row="2"
+                Stroke="#E0E0E0"
+                StrokeThickness="1"
+                BackgroundColor="#F5F5F5"
+                Padding="10">
+            <ScrollView>
+                <VerticalStackLayout>
+                    <Label Text="{Binding LogsText}"
+                           IsVisible="{Binding HasLogs}"
+                           FontFamily="monospace"
+                           FontSize="11"
+                           TextColor="#333"
+                           LineBreakMode="WordWrap"
+                           HorizontalOptions="Fill"
+                           VerticalOptions="Start"
+                           Padding="8"
+                           BackgroundColor="White"/>
+                    <Label Text="No logs available"
+                           IsVisible="{Binding HasNoLogs}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           TextColor="Gray"
+                           Margin="0,50,0,0"/>
+                </VerticalStackLayout>
+            </ScrollView>
+        </Border>
+    </Grid>
+</ContentPage>
+

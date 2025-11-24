@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="ShopAssistant.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:ShopAssistant"
+    xmlns:views="clr-namespace:ShopAssistant.Views"
+    Title="Shop Assistant"
+    FlyoutBehavior="Disabled">
+
+    <TabBar x:Name="MainTabBar">
+        <!-- Protected Pages - Require authentication -->
+        <ShellContent
+            Title="Search &amp; Chat"
+            ContentTemplate="{DataTemplate views:ChatPage}"
+            Route="Chat"
+            Icon="chat.svg" />
+        
+        <ShellContent
+            Title="Collection"
+            ContentTemplate="{DataTemplate views:CollectionPage}"
+            Route="Collection"
+            Icon="home.svg" />
+        
+        <ShellContent
+            Title="Settings"
+            ContentTemplate="{DataTemplate views:SettingsPage}"
+            Route="Settings"
+            Icon="settings.svg" />
+    </TabBar>
+    
+    <!-- Login Page - Not in TabBar, accessed via route only -->
+    <ShellContent
+        Title="Login"
+        ContentTemplate="{DataTemplate views:LoginPage}"
+        Route="Login" />
+    
+    <!-- Debug Log Page (not in TabBar, accessed via route only) -->
+    <ShellContent
+        Title="Debug Logs"
+        ContentTemplate="{DataTemplate views:DebugLogPage}"
+        Route="DebugLog" />
+</Shell>

@@ -1,0 +1,928 @@
+{
+	"info": {
+		"_postman_id": "product-assistant-api-collection",
+		"name": "Product Assistant API",
+		"description": "Complete API collection for Product Assistant - includes API Service, AI Service, and Scraping Service endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "aiServiceUrl",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "scrapingServiceUrl",
+			"value": "http://localhost:8082",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "apiKey",
+			"value": "AIzaSyDk4sifW4idrGAJW7emWFS23ziDKcW6X4k",
+			"type": "string"
+		},
+		{
+			"key": "conversationId",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Health",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["health"]
+						}
+					}
+				},
+				{
+					"name": "Readiness Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health/ready",
+							"host": ["{{baseUrl}}"],
+							"path": ["health", "ready"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    pm.collectionVariables.set(\"token\", jsonData.token);",
+									"    pm.collectionVariables.set(\"userId\", jsonData.userId);",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"demo-user\",\n    \"password\": \"password\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/login",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/register",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{userId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/logout",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "logout"]
+						}
+					}
+				},
+				{
+					"name": "Validate Token",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/auth/validate?token={{token}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "auth", "validate"],
+							"query": [
+								{
+									"key": "token",
+									"value": "{{token}}"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Chat",
+			"item": [
+				{
+					"name": "Send Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"Find me a good laptop under 1000 euros\",\n    \"userId\": \"{{userId}}\",\n    \"apiKey\": \"{{apiKey}}\",\n    \"conversationId\": null\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/chat/message",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "chat", "message"]
+						}
+					}
+				},
+				{
+					"name": "Test API Key",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/chat/test-apikey?apiKey={{apiKey}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "chat", "test-apikey"],
+							"query": [
+								{
+									"key": "apiKey",
+									"value": "{{apiKey}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Search Products (Legacy)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"query\": \"laptop\",\n    \"apiKey\": \"{{apiKey}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/chat/search",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "chat", "search"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Conversations",
+			"item": [
+				{
+					"name": "Get Conversations",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData && jsonData.length > 0) {",
+									"        pm.collectionVariables.set(\"conversationId\", jsonData[0].id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/conversations?userId={{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "conversations"],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Conversation by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/conversations/{{conversationId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "conversations", "{{conversationId}}"]
+						}
+					}
+				},
+				{
+					"name": "Create Conversation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 201 || pm.response.code === 200) {",
+									"    var jsonData = pm.response.json();",
+									"    if (jsonData && jsonData.id) {",
+									"        pm.collectionVariables.set(\"conversationId\", jsonData.id);",
+									"    }",
+									"}"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"title\": \"Test Conversation\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/conversations",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "conversations"]
+						}
+					}
+				},
+				{
+					"name": "Update Conversation Title",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Test Conversation\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/conversations/{{conversationId}}/title",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "conversations", "{{conversationId}}", "title"]
+						}
+					}
+				},
+				{
+					"name": "Delete Conversation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/conversations/{{conversationId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "conversations", "{{conversationId}}"]
+						}
+					}
+				},
+				{
+					"name": "Get Conversation Messages",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/conversations/{{conversationId}}/messages?limit=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "conversations", "{{conversationId}}", "messages"],
+							"query": [
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Save User Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"message\": \"This is a test user message\",\n    \"response\": \"\",\n    \"isUserMessage\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/conversations/{{conversationId}}/messages",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "conversations", "{{conversationId}}", "messages"]
+						}
+					}
+				},
+				{
+					"name": "Save Assistant Response",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": \"{{userId}}\",\n    \"message\": \"\",\n    \"response\": \"This is a test assistant response\",\n    \"isUserMessage\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/conversations/{{conversationId}}/messages",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "conversations", "{{conversationId}}", "messages"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/products?userId={{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products"],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products", "1"]
+						}
+					}
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test Product\",\n    \"price\": 99.99,\n    \"description\": \"Test product description\",\n    \"url\": \"https://example.com/product\",\n    \"imageUrl\": \"https://example.com/image.jpg\",\n    \"userId\": \"{{userId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/products",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products"]
+						}
+					}
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"name\": \"Updated Product\",\n    \"price\": 149.99,\n    \"description\": \"Updated description\",\n    \"url\": \"https://example.com/product\",\n    \"imageUrl\": \"https://example.com/image.jpg\",\n    \"userId\": \"{{userId}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/products/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products", "1"]
+						}
+					}
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products", "1"]
+						}
+					}
+				},
+				{
+					"name": "Search Products",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/search?term=laptop",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products", "search"],
+							"query": [
+								{
+									"key": "term",
+									"value": "laptop"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Compare Products",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productIds\": [1, 2, 3],\n    \"userId\": \"{{userId}}\",\n    \"apiKey\": \"{{apiKey}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/products/compare",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products", "compare"]
+						}
+					}
+				},
+				{
+					"name": "Get User Comparisons",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/comparisons?userId={{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products", "comparisons"],
+							"query": [
+								{
+									"key": "userId",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Comparison by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/comparisons/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products", "comparisons", "1"]
+						}
+					}
+				},
+				{
+					"name": "Refresh Comparison",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"apiKey\": \"{{apiKey}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/products/comparisons/1/refresh",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products", "comparisons", "1", "refresh"]
+						}
+					}
+				},
+				{
+					"name": "Delete Comparison",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/products/comparisons/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "products", "comparisons", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Product Comparisons",
+			"item": [
+				{
+					"name": "Create Comparison",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productIds\": [1, 2, 3],\n    \"userId\": \"{{userId}}\",\n    \"apiKey\": \"{{apiKey}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/productcomparisons",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productcomparisons"]
+						}
+					}
+				},
+				{
+					"name": "Get Comparison by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/productcomparisons/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productcomparisons", "1"]
+						}
+					}
+				},
+				{
+					"name": "Get User Comparisons",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/productcomparisons/user/{{userId}}",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productcomparisons", "user", "{{userId}}"]
+						}
+					}
+				},
+				{
+					"name": "Refresh Comparison",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"apiKey\": \"{{apiKey}}\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/productcomparisons/1/refresh",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productcomparisons", "1", "refresh"]
+						}
+					}
+				},
+				{
+					"name": "Delete Comparison",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/productcomparisons/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "productcomparisons", "1"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "AI Service",
+			"item": [
+				{
+					"name": "AI Chat",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"message\": \"What are the best laptops for programming?\",\n    \"userId\": \"{{userId}}\",\n    \"apiKey\": \"{{apiKey}}\",\n    \"conversationId\": null\n}"
+						},
+						"url": {
+							"raw": "{{aiServiceUrl}}/api/ai/chat",
+							"host": ["{{aiServiceUrl}}"],
+							"path": ["api", "ai", "chat"]
+						}
+					}
+				},
+				{
+					"name": "AI Search Products",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"query\": \"gaming laptop\"\n}"
+						},
+						"url": {
+							"raw": "{{aiServiceUrl}}/api/ai/search",
+							"host": ["{{aiServiceUrl}}"],
+							"path": ["api", "ai", "search"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Scraping Service",
+			"item": [
+				{
+					"name": "Search Products",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"searchTerm\": \"laptop\"\n}"
+						},
+						"url": {
+							"raw": "{{scrapingServiceUrl}}/api/scraping/search",
+							"host": ["{{scrapingServiceUrl}}"],
+							"path": ["api", "scraping", "search"]
+						}
+					}
+				},
+				{
+					"name": "Get Product Details",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"productUrl\": \"https://www.arukereso.hu/laptop-c3141/\",\n}"
+						},
+						"url": {
+							"raw": "{{scrapingServiceUrl}}/api/scraping/details",
+							"host": ["{{scrapingServiceUrl}}"],
+							"path": ["api", "scraping", "details"]
+						}
+					}
+				},
+				{
+					"name": "Scrape Category",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"categoryUrl\": \"https://www.arukereso.hu/laptop-c3141/\"\n}"
+						},
+						"url": {
+							"raw": "{{scrapingServiceUrl}}/api/scraping/category",
+							"host": ["{{scrapingServiceUrl}}"],
+							"path": ["api", "scraping", "category"]
+						}
+					}
+				}
+			]
+		}
+	]
+}
+

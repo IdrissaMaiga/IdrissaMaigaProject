@@ -1,0 +1,34 @@
+﻿<?xml version = "1.0" encoding = "UTF-8" ?>
+<Application x:Class="ShopAssistant.App"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:ShopAssistant.Converters">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Converters -->
+            <converters:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <converters:MessageColorConverter x:Key="MessageColorConverter" />
+            <converters:MessageAlignmentConverter x:Key="MessageAlignmentConverter" />
+            <converters:MessageTextColorConverter x:Key="MessageTextColorConverter" />
+            <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
+            <converters:EditButtonTextConverter x:Key="EditButtonTextConverter" />
+            <converters:EditButtonColorConverter x:Key="EditButtonColorConverter" />
+            <converters:EditModeBackgroundConverter x:Key="EditModeBackgroundConverter" />
+            <converters:NetworkStatusColorConverter x:Key="NetworkStatusColorConverter" />
+            <converters:ApiKeyStatusColorConverter x:Key="ApiKeyStatusColorConverter" />
+            <converters:BoolToTextConverter x:Key="BoolToTextConverter" />
+            <converters:StringToBoolConverter x:Key="StringToBoolConverter" />
+            <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+            <converters:ProductSelectionButtonConverter x:Key="ProductSelectionButtonConverter" />
+            <converters:ProductSelectionColorConverter x:Key="ProductSelectionColorConverter" />
+            <converters:MessageColumnConverter x:Key="MessageColumnConverter" />
+            <converters:MarkdownToHtmlConverter x:Key="MarkdownToHtmlConverter" />
+            <converters:DateTimeToVisibilityConverter x:Key="DateTimeToVisibilityConverter" />
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
