@@ -155,7 +155,7 @@ This README contains all essential information. For detailed technical documenta
 ## Project Structure
 
 ```
-IdrissaMaigaProject/
+product-assistant/
 ├── Backend/                          # All backend services and shared libraries
 │   ├── ProductAssistant.Core/       # Shared core library
 │   │   ├── Models/                   # Data models (Product, Conversation, User, etc.)
@@ -367,7 +367,7 @@ wsl -d Ubuntu-24.04 -e bash -c "kubectl port-forward -n product-assistant svc/sc
 
 ```bash
 # Navigate to project directory
-cd IdrissaMaigaProject
+cd product-assistant
 
 # Restore NuGet packages
 dotnet restore
@@ -1301,7 +1301,7 @@ kubectl cluster-info
 eval $(minikube docker-env)
 
 # Navigate to project directory (mount Windows drive or clone in WSL)
-cd /mnt/c/Users/user/Asztal/IdrissaMaigaProject
+cd /mnt/c/path/to/product-assistant
 
 # Build images (they'll be available in Minikube)
 docker build -f Backend/ProductAssistant.Api/Dockerfile -t product-assistant-api:latest .
