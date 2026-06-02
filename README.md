@@ -1,4 +1,10 @@
-# Product Assistant - AI-Powered Shopping Assistant
+# Product Assistant -- AI-Powered Shopping Assistant
+
+![.NET](https://img.shields.io/badge/.NET_8-512BD4?style=flat-square&logo=dotnet&logoColor=white)
+![C#](https://img.shields.io/badge/C%23-239120?style=flat-square&logo=csharp&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white)
+![Google Gemini](https://img.shields.io/badge/Gemini_AI-4285F4?style=flat-square&logo=google&logoColor=white)
 
 A comprehensive .NET MAUI mobile application that provides a **unified conversational shopping experience**. Users interact with an AI assistant through natural language to discover products, with search results displayed inline within the conversation. The app integrates with Arukereso.hu for product scraping, uses Auth0 for authentication, and leverages Google Gemini API for AI-powered conversations. Data is stored in SQLite for reliable data persistence and conversation memory.
 
